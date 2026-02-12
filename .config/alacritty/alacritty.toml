@@ -1,0 +1,35 @@
+
+[window]
+
+opacity = 0.7
+
+# padding.x = 3
+# padding.y = 5
+
+startup_mode = "Maximized"
+decorations = "None"
+# decorations_theme_variant = "Light" # "Dark"
+decorations_theme_variant = "Dark"
+
+[font]
+normal                = { family = "JetBrains Mono Nerd Font", style = "Regular" }
+bold                  = { family = "JetBrains Mono Nerd Font", style = "Bold" }
+italic                = { family = "JetBrains Mono Nerd Font", style = "Italic" }
+bold_italic           = { family = "JetBrains Mono Nerd Font", style = "Bold Italic" }
+size = 8
+
+[cursor]
+
+blink_interval = 200
+blink_timeout = 0
+
+[cursor.style]
+
+shape = "Block"
+blinking = "always"
+
+[cursor.vi_mode_style]
+
+shape = "Block"
+blinking = "always"
+

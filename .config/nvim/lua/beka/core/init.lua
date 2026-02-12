@@ -1,0 +1,5 @@
+require 'beka.core.options'
+require 'beka.core.keymaps'
+require 'beka.core.autocmds'
+require 'beka.core.lsp'
+require 'beka.core.diagnostics'
