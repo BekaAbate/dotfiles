@@ -23,7 +23,7 @@ return { -- Autoformat
         return nil
       else
         return {
-          timeout_ms = 500,
+          timeout_ms = 5000,
           lsp_format = 'fallback',
         }
       end
@@ -38,12 +38,19 @@ return { -- Autoformat
       json = { 'prettier' },
       markdown = { 'prettier' },
       lua = { 'stylua' },
+      prisma = { 'prisma_format' }, -- 👈 ADD THIS LINE
     },
     formatters = {
       prettier = {
         prepend_args = function()
-          return { '--tab-width', '2', '--single-quote', 'false' }
+          return { '--tab-width', '2', '--single-quote', 'true' }
         end,
+      },
+      -- 👈 ADD THIS ENTIRE BLOCK
+      prisma_format = {
+        command = 'npx',
+        args = { 'prisma', 'format', '--schema', '$FILENAME' },
+        stdin = false, -- Prisma requires a file path, cannot read from stdin
       },
     },
   },

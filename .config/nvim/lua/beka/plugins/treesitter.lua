@@ -26,6 +26,7 @@ return {
       'tsx',
       'css',
       'html',
+      'prisma',
     },
     -- Autoinstall languages that are not installed
     auto_install = true,

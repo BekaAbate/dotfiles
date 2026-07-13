@@ -42,6 +42,8 @@ return {
         'typescript-language-server',
         'tailwindcss-language-server',
         'intelephense',
+        'prisma-language-server',
+        -- 'gopls',
       },
     }
   end,
