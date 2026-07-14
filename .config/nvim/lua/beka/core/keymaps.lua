@@ -1,123 +1,65 @@
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-vim.g.have_nerd_font = true
-vim.g.clipboard = {
-  name = 'wl-clipboard',
-  copy = {
-    ['+'] = { 'wl-copy', '--type', 'text/plain' },
-    ['*'] = { 'wl-copy', '--primary', '--type', 'text/plain' },
-  },
-  paste = {
-    ['+'] = { 'wl-paste', '--no-newline' },
-    ['*'] = { 'wl-paste', '--no-newline' },
-  },
-  cache_enabled = true,
-}
--- --disable default file explorer
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
+local map = vim.keymap.set
 
-local keymap = vim.keymap
-local opts = { noremap = true, silent = true }
+-- Disable space in normal/visual (it's the leader)
+map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
---disable space in some modes
-keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+-- Clear search highlights
+map('n', '<Esc>', ':nohl<CR>', { silent = true })
 
---clear search highlights
-keymap.set('n', '<Esc>', ':nohl<CR>', opts)
+-- Navigate wrapped lines naturally
+map('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+map('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
---alows moving through wrapped lines
-keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+-- Scroll and center
+map('n', '<C-d>', '<C-d>zz', { silent = true })
+map('n', '<C-u>', '<C-u>zz', { silent = true })
 
--- Vertical scroll and center
-keymap.set('n', '<C-d>', '<C-d>zz', opts)
-keymap.set('n', '<C-u>', '<C-u>zz', opts)
+-- Keep search matches centered
+map('n', 'n', 'nzzzv')
+map('n', 'N', 'Nzzzv')
 
--- find and center
-keymap.set('n', 'n', 'nzzzv')
-keymap.set('n', 'N', 'Nzzzv')
+-- Toggle line wrap
+map('n', '<leader>lw', '<cmd>set wrap!<CR>', { silent = true, desc = 'Toggle line wrap' })
 
--- -- Increment/decrement numbers
--- keymap.set('n', '<leader>+', '<C-a>', opts) -- increment
--- keymap.set('n', '<leader>-', '<C-x>', opts) -- decrement
+-- Window management
+map('n', '<leader>wv', '<C-W>v', { desc = 'Split window vertically' })
+map('n', '<leader>wh', '<C-W>s', { desc = 'Split window horizontally' })
+map('n', '<leader>we', '<C-W>=', { desc = 'Equalise split windows' })
+map('n', '<leader>wx', '<cmd>close<CR>', { desc = 'Close current split' })
 
--- Toggle line wrapping
-keymap.set('n', '<leader>lw', '<cmd>set wrap!<CR>', opts)
+-- Move selected lines up/down
+map('v', '<A-j>', ':m .+1<CR>==', { silent = true })
+map('v', '<A-k>', ':m .-2<CR>==', { silent = true })
 
--- ---window managment
---
-keymap.set('n', '<leader>wv', '<C-W>v', { desc = 'split window vertically' })
-keymap.set('n', '<leader>wh', '<C-W>s', { desc = 'split window horizontally' })
-keymap.set('n', '<leader>we', '<C-W>=', { desc = 'make split window equal size' })
-keymap.set('n', '<leader>wx', '<cmd>close<CR>', { desc = 'close current split window' })
+-- Keep yank register when pasting over selection
+map('v', 'p', '"_dP', { silent = true })
 
--- Move text up and down
-keymap.set('v', '<A-j>', ':m .+1<CR>==', opts)
-keymap.set('v', '<A-k>', ':m .-2<CR>==', opts)
+-- Diagnostics
+map('n', '<leader>dp', function()
+  vim.diagnostic.jump { count = -1, float = true }
+end, { desc = 'Previous diagnostic' })
 
--- Keep last yanked when pasting
-keymap.set('v', 'p', '"_dP', opts)
+map('n', '<leader>dn', function()
+  vim.diagnostic.jump { count = 1, float = true }
+end, { desc = 'Next diagnostic' })
+
+map('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Show diagnostic float' })
+map('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'Diagnostic list' })
+map('n', '<leader>dq', vim.cmd.lclose, { desc = 'Close diagnostic list' })
 
 -- Toggle diagnostics
 local diagnostics_active = true
-keymap.set('n', '<leader>dt', function()
+map('n', '<leader>dt', function()
   diagnostics_active = not diagnostics_active
-
   if diagnostics_active then
     vim.diagnostic.show()
   else
     vim.diagnostic.hide()
   end
-end)
+end, { desc = 'Toggle diagnostics' })
 
--- Diagnostic keymaps
-keymap.set('n', '<leader>dp', function()
-  vim.diagnostic.jump { count = -1, float = true }
-end, { desc = 'Go to previous diagnostic message' })
-
-keymap.set('n', '<leader>dn', function()
-  vim.diagnostic.jump { count = 1, float = true }
-end, { desc = 'Go to next diagnostic message' })
-
-keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-keymap.set('n', '<leader>dq', vim.cmd.lclose, { desc = 'Close diagnostics list' })
-
--- Buffers
-keymap.set('n', '<Tab>', ':bnext<CR>', opts)
-keymap.set('n', '<S-Tab>', ':bprevious<CR>', opts)
-keymap.set('n', '<leader>cx', ':Bdelete!<CR>', opts) -- close buffer
-keymap.set('n', '<leader>b', '<cmd> enew <CR>', opts) -- new buffer
-
--- keymap.set('n', '<leader>tf', function()
---   local buf = vim.api.nvim_create_buf(false, true)
---   vim.api.nvim_open_win(buf, true, {
---     relative = 'editor',
---     width = math.floor(vim.o.columns * 0.8),
---     height = math.floor(vim.o.lines * 0.6),
---     col = math.floor(vim.o.columns * 0.1),
---     row = math.floor(vim.o.lines * 0.2),
---     style = 'minimal',
---     border = 'rounded',
---   })
---   vim.cmd 'terminal'
---   vim.cmd 'startinsert'
--- end, { desc = 'Toggle floating terminal' })
-
--- Exit terminal mode with 'jk' (like escaping insert mode)
--- keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- Open/close terminal in a vertical split
--- keymap.set('n', '<leader>tv', ':vnew | terminal<CR>', { desc = 'Open terminal (vertical)' })
-
--- Open/close terminal in a horizontal split
--- keymap.set('n', '<leader>th', ':new | terminal<CR>', { desc = 'Open terminal (horizontal)' })
-
--- --tab managment
---
--- keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "open new tab" })
--- keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "close current tab" })
--- keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "go to next tab" })
--- keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "go to previous tab" })
--- keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "open current buffer in new tab" })
+-- Buffer navigation
+map('n', '<Tab>', ':bnext<CR>', { silent = true })
+map('n', '<S-Tab>', ':bprevious<CR>', { silent = true })
+map('n', '<leader>cx', ':Bdelete!<CR>', { silent = true, desc = 'Close buffer' })
+map('n', '<leader>b', '<cmd>enew<CR>', { silent = true, desc = 'New buffer' })
