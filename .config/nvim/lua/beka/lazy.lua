@@ -6,12 +6,14 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     error('Error cloning lazy.nvim:\n' .. out)
   end
 end
-local rtp = vim.opt.rtp
-rtp:prepend(lazypath)
+vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  { import = 'beka.plugins' },
-  { import = 'beka/plugins/lsp' },
+  { import = 'beka.plugins.ui' },
+  { import = 'beka.plugins.editor' },
+  { import = 'beka.plugins.tools' },
+  { import = 'beka.plugins.code' },
+  { import = 'beka.plugins.lsp' },
 }, {
   change_detection = {
     notify = false,
@@ -21,4 +23,5 @@ require('lazy').setup({
       reset = false,
     },
   },
+  change_detection = { notify = false },
 })

@@ -1,77 +1,75 @@
 local opt = vim.opt
-local o = vim.o
 
--- options fo folding
-vim.o.foldcolumn = '1'
-vim.o.foldlevel = 99
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
+-- Global vim vars (leaders must be set before lazy loads plugins)
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+vim.g.have_nerd_font = true
+vim.g.clipboard = {
+  name = 'wl-clipboard',
+  copy = {
+    ['+'] = { 'wl-copy', '--type', 'text/plain' },
+    ['*'] = { 'wl-copy', '--primary', '--type', 'text/plain' },
+  },
+  paste = {
+    ['+'] = { 'wl-paste', '--no-newline' },
+    ['*'] = { 'wl-paste', '--no-newline' },
+  },
+  cache_enabled = true,
+}
 
-opt.relativenumber = true
+-- Line numbers
 opt.number = true
+opt.relativenumber = true
 
--- tabs and indentaion
-
+-- Tabs & indentation
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 opt.autoindent = true
-o.smartindent = true
+opt.smartindent = true
+
+-- Line display
 opt.wrap = false
+opt.breakindent = true
 opt.cursorline = false
-o.breakindent = true
-o.undofile = true
-o.signcolumn = 'yes'
-o.showmode = false
---backups
-o.backup = false
-o.swapfile = false
+opt.scrolloff = 10
+opt.signcolumn = 'yes'
+opt.showmode = false
 
-vim.opt.shortmess:append 'c' -- don't give |ins-completion-menu| messages
---for hyphenated lines as one word
-vim.opt.iskeyword:append '-'
+-- Folding
+opt.foldcolumn = '1'
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
 
---for smooth auto complition
-o.completeopt = 'menuone,noselect'
---wrap lines
-o.wrap = false
-o.linebreak = true
-
--- --whitespace settings
--- o.list = true
--- opt.listchars = { tab = "", trail = "·", nbsp = "␣" }
-
--- Preview substitutions live, as you type!
-o.inccommand = 'nosplit'
-
--- Decrease update time
-o.updatetime = 500
-
--- Decrease mapped sequence wait time
-o.timeoutlen = 500
-
---no of screen lines to keep
-o.scrolloff = 10
-
--- search settings
+-- Search
 opt.ignorecase = true
 opt.smartcase = true
+opt.inccommand = 'nosplit'  -- live preview of substitutions
 
---shows confirm dialog
-o.confirm = true
+-- Undo / backups
+opt.undofile = true
+opt.backup = false
+opt.swapfile = false
 
--- for colorscheme
+-- Completion
+opt.completeopt = 'menuone,noselect'
+opt.shortmess:append 'c'
+
+-- Splits
+opt.splitright = true
+opt.splitbelow = true
+
+-- Misc
+opt.timeoutlen = 500
+opt.updatetime = 500
+opt.confirm = true
+opt.backspace = 'indent,eol,start'
+opt.iskeyword:append '-'  -- treat hyphenated words as one word
 opt.termguicolors = true
 opt.background = 'dark'
 
---backspace
-opt.backspace = 'indent,eol,start'
-
---clipboard
+-- Clipboard (deferred so it doesn't slow startup)
 vim.schedule(function()
-  o.clipboard = 'unnamedplus'
+  opt.clipboard = 'unnamedplus'
 end)
-
---split window
-opt.splitright = true
-opt.splitbelow = true
