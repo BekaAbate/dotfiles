@@ -12,8 +12,8 @@ return {
         row = 0.35,
         col = 0.50,
         preview = {
-          layout = 'vertical',
-          vertical = 'down:45%',
+          layout = 'horizontal',
+          horizontal = 'right:50%',
         },
       },
       keymap = {
@@ -28,6 +28,12 @@ return {
           [1] = true,
           ['default'] = require('fzf-lua.actions').file_edit,
         },
+      },
+      files = {
+        -- Include hidden files (like .env) and ignored files (from .gitignore) by default.
+        -- We explicitly exclude .git and node_modules so that the search remains extremely fast.
+        fd_opts = "--color=never --type f --type l --hidden --follow --no-ignore --exclude .git --exclude node_modules --exclude dist",
+        rg_opts = "--color=never --files --hidden --follow --no-ignore -g '!.git' -g '!node_modules' -g '!dist'",
       },
     }
 
