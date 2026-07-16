@@ -59,10 +59,10 @@ map('n', '<leader>dt', function()
 end, { desc = 'Toggle diagnostics' })
 
 -- Buffer navigation
-map('n', '<Tab>', ':bnext<CR>', { silent = true })
-map('n', '<S-Tab>', ':bprevious<CR>', { silent = true })
-map('n', '<leader>cx', ':Bdelete!<CR>', { silent = true, desc = 'Close buffer' })
-map('n', '<leader>b', '<cmd>enew<CR>', { silent = true, desc = 'New buffer' })
+-- map('n', '<Tab>', ':bnext<CR>', { silent = true })
+-- map('n', '<S-Tab>', ':bprevious<CR>', { silent = true })
+-- map('n', '<leader>cx', ':Bdelete!<CR>', { silent = true, desc = 'Close buffer' })
+-- map('n', '<leader>b', '<cmd>enew<CR>', { silent = true, desc = 'New buffer' })
 --disable <C-Z>
 vim.keymap.set('n', '<C-z>', '<Nop>', { noremap = true, desc = 'Disable suspend' })
 vim.keymap.set('i', '<C-z>', '<Nop>', { noremap = true })
