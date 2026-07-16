@@ -6,6 +6,8 @@ return {
     keymap = {
       preset = 'default',
       -- Custom overrides to match your old nvim-cmp muscle memory
+      ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
+      ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
       ['<C-j>'] = { 'select_next', 'fallback' },
       ['<C-k>'] = { 'select_prev', 'fallback' },
       ['<C-c>'] = { 'cancel', 'fallback' },
